@@ -1,0 +1,11 @@
+//3.2 egész triviális, a conditionnel szűröm az eseteket
+var g = [0,1,2,3] 
+var model = function(){
+  var x = uniformDraw(g);
+  var y = uniformDraw(g);
+  var z = uniformDraw(g);
+  condition((x+y+z)==7);
+  return(x)
+}
+var distx = Infer({method: 'enumerate'}, model);
+viz(distx);
