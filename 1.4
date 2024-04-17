@@ -1,0 +1,82 @@
+//1.4 Szerintem magáért beszél, ugyanakkor ehhez van egy kiegészítő CoQ is
+var suit = ['♣','♦','♥','♠']; 
+var number= ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
+var draw = function()  {
+  var szin = uniformDraw(suit);
+  var szam = uniformDraw(number);
+  return(szin+szam);
+  
+}
+var hand = function() {
+  var kez = [draw(),draw(),draw(),draw(),draw()];
+  condition((kez[0]!==kez[1]||
+            kez[0]!==kez[2]||
+            kez[0]!==kez[3]||
+            kez[0]!==kez[4]||
+            kez[1]!==kez[2]||
+            kez[1]!==kez[3]||
+            kez[1]!==kez[4]||
+            kez[2]!==kez[3]||
+            kez[2]!==kez[4]||
+            kez[3]!==kez[4]));
+  return (kez); 
+}
+var KA = function (input) {
+  var A = (input.indexOf('♣A')!==-1)||
+          (input.indexOf('♦A')!==-1)||
+          (input.indexOf('♥A')!==-1)||
+          (input.indexOf('♠A')!==-1)? true : false;  
+  var K = (input.indexOf('♣K')!==-1)||
+          (input.indexOf('♦K')!==-1)||
+          (input.indexOf('♥K')!==-1)||
+          (input.indexOf('♠K')!==-1)? true : false;
+  return([K,A]);
+}
+
+var sentences = function (input){
+  var sent1 = ((input[0]==0)&&(input[1]==0))? true :
+              ((input[0]==0)&&(input[1]==1))? true :
+              ((input[0]==1)&&(input[1]==0))? false :
+              ((input[0]==1)&&(input[1]==1))? true : -1;
+  
+  var sent2 = ((input[0]==0)&&(input[1]==0))? false :
+              ((input[0]==0)&&(input[1]==1))? true :
+              ((input[0]==1)&&(input[1]==0))? true :
+              ((input[0]==1)&&(input[1]==1))? true : -1;
+  
+  return[sent1,sent2];
+}
+
+var and = function(input){
+  return(input[0]&&input[1])
+}
+
+var or = function (input){
+  return(input[0]||input[1])
+}
+
+var xor = function (input){
+  return((input[0]||input[1])&&!(input[0]&&input[1]))
+}
+ 
+var nagyonkomplexmodel = function(){
+  var kezem = hand();
+  print('A kezemben lévő lapok: '+kezem);
+  print('');
+  print('Van-e Király a kezemben? '+ KA(kezem)[0]);
+  print('Van-e Ász a kezemben? '+ KA(kezem)[1]);
+  print('');
+  print('Ha Király van a kezemben Ász van a kezemben? '+ sentences(KA(kezem))[0]);
+  print('Ha nincs Király a kezemben Ász van a kezemben? '+ sentences(KA(kezem))[1]);
+  print('');
+  print('');
+  print('Tehát ha az operátor ÉS akkor az állítás: '+ and(sentences(KA(kezem))));
+  print('Tehát ha az operátor VAGY akkor az állítás: '+ or(sentences(KA(kezem))));
+  print('Tehát ha az operátor KIZÁRÓ VAGY (XOR) akkor az állítás: '+ xor(sentences(KA(kezem))));
+  print('');
+  print('');
+  print('');
+  print('');
+}
+var output = 
+  Infer({model: nagyonkomplexmodel, method:'rejection', samples: 20})
