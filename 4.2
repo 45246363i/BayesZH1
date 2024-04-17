@@ -1,0 +1,38 @@
+//4.2 Hörcsögünk súlyának mérési adatai: 28 g, 31 g, 44 g, 29 g. 
+//Lexikonbeli adatok: átlagos súly: 32 g, szórás: 10 g. 
+//Mi lesz az adatokkal való frissítés után a hörcsög súlyának eloszlása?
+
+//4.2 Frissítem az adatokat a feladatból
+var data = [{k: 28},
+            {k: 31},
+            {k: 44},
+            {k: 29}
+           ]
+
+var simpleModel = function() {
+  
+  var m = gaussian(32,10);
+   
+  map(function(d){observe(Gaussian({mu: m, sigma: 1}),d.k)},data);
+  
+  var Prior = gaussian(32,10);
+  
+  var PredictivePosterior = gaussian(m,1);
+  
+//A hörcsögünk súlyának eloszlása a frissítés után a Posterior, ugyanakkor a várható mérési
+// eredmények ennek következtében a PredictivePosterior, észrevétel, hogy mikor 44-et mértünk
+// valószínűleg ugrált a mérlegen.
+  return {
+          Prior: Prior, 
+          Posterior: m,
+          PosteriorPredictive: PredictivePosterior,
+          
+
+      };
+}
+
+var opts = {method: 'SMC', particles: 2000, rejuvSteps: 5}
+
+var output_1 = Infer(opts, simpleModel)
+
+viz.marginals(output_1)
