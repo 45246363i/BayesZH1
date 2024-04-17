@@ -1,0 +1,21 @@
+(* Az eredeti, nem kizáró vagy, azért nem feltétlenül vezet ászhoz mert a kapcsolat közöttük nem ÉS,
+ így elég ha csak az egyik teljesül és mivel a A->B következtetés ~A esetben mindig igaz függetlenül B-től ezért
+az egyik oldal mindig igaz a vagy két oldalán, azaz nem lehet levonni belőle következtetést.*) 
+
+Lemma King_Ace_paradox : forall K A : Prop, (K\/~K)/\((K->A)/\(~K->A))->A.
+Proof.
+intros.
+destruct H.
+tauto.
+Qed.
+
+(*De Morgan azonosságot alkalmazva a kizáróvagyra, A XoR B = (A/\~B)\/(~A/\B) csak a feladat kedvéért 
+másképp mint a könyvben, ugyanakkor a könyv nevezéktanját és logikáját követve *)
+
+Lemma King_Ace_XoR : forall K A : Prop, ((K->A)/\~(~K->A))\/(~(K->A)/\(~K->A))->~A.
+Proof.
+intros.
+destruct H.
+tauto.
+tauto.
+Qed.
