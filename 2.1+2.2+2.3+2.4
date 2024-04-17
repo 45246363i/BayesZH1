@@ -1,0 +1,48 @@
+Lemma problem_1 : forall A B C : Prop, A /\ (B \/ C) -> (A /\ B) \/ (A /\ C).
+Proof.
+intros.
+destruct H.
+destruct H0.
+left.
+split.
+apply H.
+apply H0.
+right.
+split.
+apply H.
+apply H0.
+Qed.
+
+Lemma problem_2 : forall A B C : Prop, ((B -> A) /\ (C -> A)) -> ((B \/ C) -> A).
+Proof.
+intros.
+destruct H.
+destruct H0.
+apply H.
+apply H0.
+apply H1.
+apply H0.
+Qed.
+
+Lemma problem_3 : forall A B : Prop, (A \/ ~A) -> ((A -> B) -> A) -> A.
+Proof.
+intros.
+destruct H.
+apply H.
+apply H0.
+intros.
+contradiction.
+Qed.
+
+Lemma problem_4 : forall (U : Type) (A B : U -> Prop), (exists x, A x /\ B x) -> (exists x, A x) /\ (exists x, B x).
+Proof.
+intros.
+destruct H.
+destruct H.
+split.
+exists x.
+apply H.
+exists x.
+apply H0.
+Qed.
+
