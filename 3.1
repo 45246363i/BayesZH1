@@ -1,0 +1,35 @@
+//3.1 Újrahasználtam az 1.4 kódomat nagyrészt, hasonló gondolat, függvények egymásnak adnak 
+//értékeket, minden függvény egy logikai lépés, vagy átalakítás, kb lineárisra van rendezve
+var suit = ['♣','♦','♥','♠']; 
+var number= ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
+var draw = function()  {
+  var szin = uniformDraw(suit);
+  var szam = uniformDraw(number);
+  return(szin+szam);
+  
+}
+var KK = function (input) {
+  var K1 = (input[0]==('♣K'))||
+          (input[0]==('♦K'))||
+          (input[0]==('♥K'))||
+          (input[0]==('♠K'))? true : false;  
+  var K2 = (input[1]==('♣K'))||
+          (input[1]==('♦K'))||
+          (input[1]==('♥K'))||
+          (input[1]==('♠K'))? true : false;
+  return([K1,K2]);
+}
+var hand = function() {
+  var kez = [draw(),draw()];
+  condition((kez[0]!==kez[1]))
+  return (kez);
+}
+var xor = function (input){
+  return((input[0]||input[1])&&!(input[0]&&input[1]))
+}
+var model = function(){
+  return(xor(KK(hand())));
+}
+var output = Infer({method: 'enumerate'}, model);
+viz (output);
+print (output);
